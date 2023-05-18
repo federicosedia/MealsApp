@@ -4,16 +4,23 @@ import 'package:meals_app/main.dart';
 import 'package:meals_app/models/category.dart';
 
 class CategoryGridItem extends StatelessWidget {
-  const CategoryGridItem({super.key, required this.category});
+  const CategoryGridItem({
+    super.key,
+    required this.category,
+    //aggiunta per per permettere di aggiungere ad ontap
+    //la funzione _selectCategory tramite onsSelectedCategory
+    required this.onsSelectedCategory,
+  });
 
   final Category category;
+  final void Function() onsSelectedCategory;
 
   @override
   Widget build(BuildContext context) {
     //inkwell a differenza di gesturedetector
     //gestisce anche gli effetti visivi
     return InkWell(
-      onTap: () {},
+      onTap: onsSelectedCategory,
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
       child: Container(
