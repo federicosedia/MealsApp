@@ -10,6 +10,8 @@ class CategoryGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      //padding -> contorno al widget
+      padding: const EdgeInsets.all(16),
       //variazione colore in opacità
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
@@ -19,7 +21,13 @@ class CategoryGridItem extends StatelessWidget {
       ),
       child: Text(
         category.title,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(),
+        // ! -> definitivo
+        //copywith copio il testo predefinito
+        //colore sempre preso dal tema e con colore di sfondo
+        style: Theme.of(context)
+            .textTheme
+            .titleLarge!
+            .copyWith(color: Theme.of(context).colorScheme.onBackground),
       ),
     );
   }

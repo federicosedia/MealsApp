@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:meals_app/data/dummy_data.dart';
+import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
@@ -24,35 +25,11 @@ class CategoriesScreen extends StatelessWidget {
             childAspectRatio: 3 / 2,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20),
-        children: const [
-          Text(
-            'f',
-            style: TextStyle(color: Colors.red),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.red),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.red),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'f',
-            style: TextStyle(color: Colors.white),
-          ),
+        children: [
+          //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
+          //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
+          for (final category in availableCategories)
+            CategoryGridItem(category: category)
         ],
       ),
     );
