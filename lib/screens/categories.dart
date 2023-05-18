@@ -29,7 +29,9 @@ class CategoriesScreen extends StatelessWidget {
           //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
           //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
           for (final category in availableCategories)
-            CategoryGridItem(category: category)
+            CategoryGridItem(
+              category: category,
+            )
         ],
       ),
     );
