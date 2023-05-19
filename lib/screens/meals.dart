@@ -21,6 +21,7 @@ class MealsScreen extends StatelessWidget {
     */
     Widget content = ListView.builder(
         itemCount: meals.length,
+        //faccio vedere a schermo ogni pasto a seconda dell'indice
         itemBuilder: (context, index) => Mealitem(meal: meals[index]));
     if (meals.isEmpty) {
       content = Center(
