@@ -3,6 +3,7 @@ import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/main.dart';
 import 'package:meals_app/models/category.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({super.key, required this.title, required this.meals});
@@ -19,11 +20,8 @@ class MealsScreen extends StatelessWidget {
     faccio vedere a schermo un testo
     */
     Widget content = ListView.builder(
-      itemCount: dummyMeals.length,
-      itemBuilder: (context, index) => Text(
-        meals[index].title,
-      ),
-    );
+        itemCount: meals.length,
+        itemBuilder: (context, index) => Mealitem(meal: meals[index]));
     if (meals.isEmpty) {
       content = Center(
         child: Column(
