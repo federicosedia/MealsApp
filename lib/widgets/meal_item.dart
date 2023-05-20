@@ -4,9 +4,10 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:meals_app/widgets/meal_item_trait.dart';
 
 class Mealitem extends StatelessWidget {
-  const Mealitem({required this.meal, super.key});
+  const Mealitem({required this.meal, super.key, required this.onSelectMeal});
 
   final Meal meal;
+  final void Function(BuildContext context, Meal meal) onSelectMeal;
 
 //get per trasformare l'iniziale del enum complessity in maiuscolo
   String get complexitytest {
@@ -32,7 +33,9 @@ class Mealitem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectMeal(context, meal);
+        },
         //stack -> widget posizionati uno sopra l'altro
         child: Stack(
           //stack elimina le impostazioni di borderradius quindi aggiungo clip

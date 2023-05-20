@@ -3,6 +3,7 @@ import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/main.dart';
 import 'package:meals_app/models/category.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/screens/meal_detail.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
@@ -10,6 +11,12 @@ class MealsScreen extends StatelessWidget {
 
   final String title;
   final List<Meal> meals;
+
+  void selectMeal(BuildContext context, Meal meal) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (ctx) => MealDetailScreen(meal: meal)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +27,11 @@ class MealsScreen extends StatelessWidget {
     faccio vedere a schermo un testo
     */
     Widget content = ListView.builder(
-        itemCount: meals.length,
-        //faccio vedere a schermo ogni pasto a seconda dell'indice
-        itemBuilder: (context, index) => Mealitem(meal: meals[index]));
+      itemCount: meals.length,
+      //faccio vedere a schermo ogni pasto a seconda dell'indice
+      itemBuilder: (context, index) =>
+          Mealitem(meal: meals[index], onSelectMeal: selectMeal),
+    );
     if (meals.isEmpty) {
       content = Center(
         child: Column(
