@@ -3,15 +3,31 @@ import 'package:meals_app/main.dart';
 import 'package:meals_app/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({super.key, required this.meal});
+  const MealDetailScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavorite,
+  });
 
   final Meal meal;
+  final void Function(Meal meal)
+      onToggleFavorite; //sollevamento stato per passare la funzione al widget meals partendo da tabs
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
+
+          //nuova azione per marcare il pasto come preferito
+          actions: [
+            IconButton(
+              onPressed: () {
+                onToggleFavorite(meal);
+              },
+              icon: const Icon(Icons.star),
+            ),
+          ],
         ),
         //singlechild aggiunto per rendere schermata scorrevolo
         body: SingleChildScrollView(

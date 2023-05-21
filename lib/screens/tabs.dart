@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/meals.dart';
 
@@ -15,6 +16,20 @@ class _TabsScreenState extends State<TabsScreen> {
   //metodo per cambiare indice a seconda dell'icona scelta
   //nella bottom navigation bar
   int _selectedPageIndex = 0;
+
+  final List<Meal> _favoriteMeals = [];
+
+//metodo per rimuovere o aggiungere pasti ai preferiti
+  void _toggleMealFavoriteStatus(Meal meal) {
+    final isExisting = _favoriteMeals
+        .contains(meal); //=true se è nei preferiti altrimenti false
+    if (isExisting) {
+      _favoriteMeals.remove(meal);
+    } else {
+      _favoriteMeals.add(meal);
+    }
+  }
+
   void _selectePage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -25,11 +40,16 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     //la pagina attiva iniziale sarà quella delle categorie
     //verrà aggiornata in base al tocco degli elementi della barra
-    Widget activepage = const CategoriesScreen();
+    Widget activepage = CategoriesScreen(
+      onToggleFavorite: _toggleMealFavoriteStatus,
+    );
     var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
-      activepage = MealsScreen(meals: []);
+      activepage = MealsScreen(
+        meals: [],
+        onToggleFavorite: _toggleMealFavoriteStatus,
+      );
       activePageTitle = 'Favorites';
     }
     return Scaffold(
