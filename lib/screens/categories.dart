@@ -34,11 +34,9 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your category'),
-      ),
-      /*
+    //rimozione scaffold per non avere due appbar che mostrano il titolo
+    return
+        /*
       gridview ci permette di avere una lista di widget diposti a griglia
       abbiamo anche il metodo builder che costruisce in modo dinamico
       oppure gridview widget
@@ -47,26 +45,25 @@ class CategoriesScreen extends StatelessWidget {
       cross -> orizzontale
       childaspectratio= rapporto due dimensioni
       */
-      body: GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20),
-        children: [
-          //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
-          //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
-          for (final category in availableCategories)
-            CategoryGridItem(
-                category: category,
-                //aggiunta la funzione "onsSelectedCategory" come proprietà al widget cetegorygriditem
-                //_selectCategory accetta come argomento context
-                //
-                onsSelectedCategory: () {
-                  _selectCategory(context, category);
-                })
-        ],
-      ),
+        GridView(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20),
+      children: [
+        //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
+        //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
+        for (final category in availableCategories)
+          CategoryGridItem(
+              category: category,
+              //aggiunta la funzione "onsSelectedCategory" come proprietà al widget cetegorygriditem
+              //_selectCategory accetta come argomento context
+              //
+              onsSelectedCategory: () {
+                _selectCategory(context, category);
+              })
+      ],
     );
   }
 }
