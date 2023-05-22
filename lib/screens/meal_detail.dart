@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/main.dart';
 import 'package:meals_app/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
@@ -39,7 +38,7 @@ class MealDetailScreen extends StatelessWidget {
                 height: 300,
                 fit: BoxFit.cover,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 14,
               ),
               Text(
@@ -48,7 +47,7 @@ class MealDetailScreen extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 14,
               ),
               for (final ingredient in meal.ingredients)
@@ -58,7 +57,7 @@ class MealDetailScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
               Text(
@@ -67,7 +66,7 @@ class MealDetailScreen extends StatelessWidget {
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 14,
               ),
               for (final steps in meal.steps)

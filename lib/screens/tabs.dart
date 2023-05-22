@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/meals.dart';
+import 'package:meals_app/widgets/main_drawer.dart';
 
 //è uno statefull perchè bisogna aggiornare la pagina
 //quindi significa aggiornare lo stato
@@ -19,14 +20,31 @@ class _TabsScreenState extends State<TabsScreen> {
 
   final List<Meal> _favoriteMeals = [];
 
+//funzione per mostrare un messaggio quando viene aggiunto ai preferiti
+  void _showInfoMessage(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
 //metodo per rimuovere o aggiungere pasti ai preferiti
   void _toggleMealFavoriteStatus(Meal meal) {
     final isExisting = _favoriteMeals
         .contains(meal); //=true se è nei preferiti altrimenti false
     if (isExisting) {
-      _favoriteMeals.remove(meal);
+      setState(() {
+        _favoriteMeals.remove(meal);
+      });
+      _showInfoMessage('Meal is no longer a Favorites');
     } else {
-      _favoriteMeals.add(meal);
+      setState(() {
+        //senza setstate non viene aggiornato lo stato
+        _favoriteMeals.add(meal);
+      });
+      _showInfoMessage('Marked as a favorite');
     }
   }
 
@@ -47,15 +65,16 @@ class _TabsScreenState extends State<TabsScreen> {
 
     if (_selectedPageIndex == 1) {
       activepage = MealsScreen(
-        meals: [],
+        meals: _favoriteMeals,
         onToggleFavorite: _toggleMealFavoriteStatus,
       );
       activePageTitle = 'Favorites';
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('dynamic'),
+        title: const Text('dynamic'),
       ),
+      drawer: const MainDrawer(),
       body: activepage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectePage,
