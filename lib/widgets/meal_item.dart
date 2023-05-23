@@ -7,7 +7,7 @@ class Mealitem extends StatelessWidget {
   const Mealitem({required this.meal, super.key, required this.onSelectMeal});
 
   final Meal meal;
-  final void Function(BuildContext context, Meal meal) onSelectMeal;
+  final void Function(Meal meal) onSelectMeal;
 
 //get per trasformare l'iniziale del enum complessity in maiuscolo
   String get complexitytest {
@@ -34,7 +34,7 @@ class Mealitem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          onSelectMeal(context, meal);
+          onSelectMeal(meal);
         },
         //stack -> widget posizionati uno sopra l'altro
         child: Stack(

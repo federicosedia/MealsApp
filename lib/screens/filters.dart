@@ -14,7 +14,9 @@ class FiltersScreen extends StatefulWidget {
   final Map<Filter, bool> currentFilters;
 
   @override
-  State<FiltersScreen> createState() => _FiltersScreenState();
+  State<FiltersScreen> createState() {
+    return _FiltersScreenState();
+  }
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {

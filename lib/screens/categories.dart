@@ -54,6 +54,7 @@ class CategoriesScreen extends StatelessWidget {
       childaspectratio= rapporto due dimensioni
       */
         GridView(
+      padding: const EdgeInsets.all(24),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
           childAspectRatio: 3 / 2,

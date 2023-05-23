@@ -48,13 +48,13 @@ class _TabsScreenState extends State<TabsScreen> {
       setState(() {
         _favoriteMeals.remove(meal);
       });
-      _showInfoMessage('Meal is no longer a Favorites');
+      _showInfoMessage('Meal is no longer a favorite.');
     } else {
+      //senza setstate non viene aggiornato lo stato
       setState(() {
-        //senza setstate non viene aggiornato lo stato
         _favoriteMeals.add(meal);
+        _showInfoMessage('Marked as a favorite!');
       });
-      _showInfoMessage('Marked as a favorite');
     }
   }
 
@@ -106,27 +106,28 @@ class _TabsScreenState extends State<TabsScreen> {
     }).toList();
     //la pagina attiva iniziale sarà quella delle categorie
     //verrà aggiornata in base al tocco degli elementi della barra
-    Widget activepage = CategoriesScreen(
+    Widget activePage = CategoriesScreen(
       onToggleFavorite: _toggleMealFavoriteStatus,
       availableMeals: availableMeals,
     );
     var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
-      activepage = MealsScreen(
+      activePage = MealsScreen(
         meals: _favoriteMeals,
         onToggleFavorite: _toggleMealFavoriteStatus,
       );
-      activePageTitle = 'Favorites';
+      activePageTitle = 'Your Favorites';
     }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('dynamic'),
+        title: Text(activePageTitle),
       ),
       drawer: MainDrawer(
         onSelectScreen: _setScreen,
       ),
-      body: activepage,
+      body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectePage,
         //currentindex per segnalare quale scheda è aperta
@@ -136,7 +137,10 @@ class _TabsScreenState extends State<TabsScreen> {
             icon: Icon(Icons.set_meal),
             label: 'Categories',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorites'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            label: 'Favorites',
+          ),
         ],
       ),
     );

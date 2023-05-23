@@ -34,22 +34,19 @@ class MealDetailScreen extends StatelessWidget {
             children: [
               Image.network(
                 meal.imageUrl,
-                width: double.infinity,
                 height: 300,
+                width: double.infinity,
                 fit: BoxFit.cover,
               ),
-              const SizedBox(
-                height: 14,
-              ),
+              const SizedBox(height: 14),
               Text(
-                'Ingredienti',
+                'Ingredients',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold),
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              const SizedBox(
-                height: 14,
-              ),
+              const SizedBox(height: 14),
               for (final ingredient in meal.ingredients)
                 Text(
                   ingredient,
@@ -57,24 +54,23 @@ class MealDetailScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
-              const SizedBox(
-                height: 22,
-              ),
+              const SizedBox(height: 24),
               Text(
                 'Steps',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold),
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              const SizedBox(
-                height: 14,
-              ),
-              for (final steps in meal.steps)
+              const SizedBox(height: 14),
+              for (final step in meal.steps)
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   child: Text(
-                    steps,
+                    step,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Theme.of(context).colorScheme.onBackground,
