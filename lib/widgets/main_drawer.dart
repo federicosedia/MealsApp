@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/main.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({super.key, required this.onSelectScreen});
@@ -12,6 +11,20 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primaryContainer,
+                  Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withOpacity(0.8)
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            padding: const EdgeInsets.all(20),
             child: Row(
               children: [
                 Icon(
@@ -30,20 +43,6 @@ class MainDrawer extends StatelessWidget {
                 )
               ],
             ),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primaryContainer,
-                  Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withOpacity(0.8)
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            padding: const EdgeInsets.all(20),
           ), //intestazione
           ListTile(
             leading: Icon(Icons.restaurant,
