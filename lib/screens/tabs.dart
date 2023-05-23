@@ -54,6 +54,13 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreen(String identifier) {
+    if (identifier == 'filters') {
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //la pagina attiva iniziale sarà quella delle categorie
@@ -74,7 +81,9 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: const Text('dynamic'),
       ),
-      drawer: const MainDrawer(),
+      drawer: MainDrawer(
+        onSelectScreen: _setScreen,
+      ),
       body: activepage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectePage,
