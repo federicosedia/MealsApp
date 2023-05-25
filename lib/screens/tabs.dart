@@ -6,6 +6,10 @@ import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 
+//import necessari per utilizzare il provider
+import 'package:meals_app/providers/meals_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 const kInitialFilters = {
   Filter.glutenFree: false,
   Filter.lactoseFree: false,
@@ -15,14 +19,16 @@ const kInitialFilters = {
 
 //è uno statefull perchè bisogna aggiornare la pagina
 //quindi significa aggiornare lo stato
-class TabsScreen extends StatefulWidget {
+//statefull widget cambierà in ConsumerStatefulWidget per utilizzare il provider
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  //consumerstate per il provider
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   //metodo per cambiare indice a seconda dell'icona scelta
   //nella bottom navigation bar
   int _selectedPageIndex = 0;
@@ -89,7 +95,11 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     //variabile dove salvo i pasti disponibili dopo i filtri
-    final availableMeals = dummyMeals.where((meal) {
+    //read per ottenere i dati dal providere una volta
+    //watch per impostare un ascoltatore e il metodo build viene eseguito di nuovo quando i dati cambiano
+    //vuole come argomento un Provider
+    final meals = ref.watch(mealsProvider);
+    final availableMeals = meals.where((meal) {
       if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
