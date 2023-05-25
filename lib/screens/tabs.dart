@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/data/dummy_data.dart';
-import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 
 //import necessari per utilizzare il provider
-import 'package:meals_app/providers/meals_providers.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/favorites_providers.dart';
+
+import 'package:meals_app/providers/filters_provider.dart';
 
 const kInitialFilters = {
   Filter.glutenFree: false,
@@ -34,8 +34,6 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   //nella bottom navigation bar
   int _selectedPageIndex = 0;
 
-  Map<Filter, bool> _selectedFilters = kInitialFilters;
-
 //funzione per mostrare un messaggio quando viene aggiunto ai preferiti
 
 //metodo per rimuovere o aggiungere pasti ai preferiti
@@ -53,18 +51,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       //result verrà impostato solo dopo che si torna indietro nella schermata
       //quindi solo dopo che il future si è risolto
       //per passare i dati utilizzo async e await creando la variabile result
-      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+      await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(
-            currentFilters: _selectedFilters,
-          ),
+          builder: (ctx) => const FiltersScreen(),
         ),
       );
-      setState(() {
-        // ?? -> se null allora viene utilizzato il valore dopo i due punti interrogativi
-        //vengono reimpostati una volta che viene reinizializzata la pagina
-        _selectedFilters = result ?? kInitialFilters;
-      });
     }
   }
 
@@ -74,22 +65,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     //read per ottenere i dati dal providere una volta
     //watch per impostare un ascoltatore e il metodo build viene eseguito di nuovo quando i dati cambiano
     //vuole come argomento un Provider
-    final meals = ref.watch(mealsProvider);
-    final availableMeals = meals.where((meal) {
-      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final availableMeals = ref.watch(filteredMealsProvider);
     //la pagina attiva iniziale sarà quella delle categorie
     //verrà aggiornata in base al tocco degli elementi della barra
     Widget activePage = CategoriesScreen(
