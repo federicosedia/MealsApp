@@ -12,15 +12,17 @@ class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavoriteMealsNotifier() : super([]);
 //non possiamo aggiungere a state (metodo fornito da StateNotifier) o rimuovere elementi
 //quindi facciamo prima un controllo se contiene il pasto e nel caso lo aggiungiamo alla lista nuova
-  void toggleMealsFavoriteStatus(Meal meal) {
+  bool toggleMealsFavoriteStatus(Meal meal) {
     final mealsIsFavorite = state.contains(meal);
 
     if (mealsIsFavorite) {
       //l'elemento
       state = state.where((element) => element.id != meal.id).toList();
+      return false;
     } else {
       //serve per aggiungere il pasto alla mia lista. Spread operator per mantenere la lista precedente + meal da aggiungere
       state = [...state, meal];
+      return true;
     }
 
     state = [];

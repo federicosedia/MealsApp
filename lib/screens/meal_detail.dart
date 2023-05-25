@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/providers/favorites_providers.dart';
 
-class MealDetailScreen extends StatelessWidget {
+//replace Stateless with Consumer
+class MealDetailScreen extends ConsumerWidget {
   const MealDetailScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavorite,
   });
 
   final Meal meal;
-  final void Function(Meal meal)
-      onToggleFavorite; //sollevamento stato per passare la funzione al widget meals partendo da tabs
-
+  //sollevamento stato per passare la funzione al widget meals partendo da tabs
+//nuovo parametro in build per ascoltare i provider
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
@@ -22,7 +23,18 @@ class MealDetailScreen extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                onToggleFavorite(meal);
+                //con ".notifier" abbiamo accesso alla classe Notifier definita nella /providers/favorite_providers
+                final wasAdded = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleMealsFavoriteStatus(meal);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(wasAdded
+                        ? 'Meal added as a favorite'
+                        : "Meal removed."),
+                  ),
+                );
               },
               icon: const Icon(Icons.star),
             ),

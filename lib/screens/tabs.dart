@@ -9,6 +9,7 @@ import 'package:meals_app/widgets/main_drawer.dart';
 //import necessari per utilizzare il provider
 import 'package:meals_app/providers/meals_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/providers/favorites_providers.dart';
 
 const kInitialFilters = {
   Filter.glutenFree: false,
@@ -33,36 +34,11 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   //nella bottom navigation bar
   int _selectedPageIndex = 0;
 
-  final List<Meal> _favoriteMeals = [];
   Map<Filter, bool> _selectedFilters = kInitialFilters;
 
 //funzione per mostrare un messaggio quando viene aggiunto ai preferiti
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
 
 //metodo per rimuovere o aggiungere pasti ai preferiti
-  void _toggleMealFavoriteStatus(Meal meal) {
-    final isExisting = _favoriteMeals
-        .contains(meal); //=true se è nei preferiti altrimenti false
-    if (isExisting) {
-      setState(() {
-        _favoriteMeals.remove(meal);
-      });
-      _showInfoMessage('Meal is no longer a favorite.');
-    } else {
-      //senza setstate non viene aggiornato lo stato
-      setState(() {
-        _favoriteMeals.add(meal);
-        _showInfoMessage('Marked as a favorite!');
-      });
-    }
-  }
 
   void _selectePage(int index) {
     setState(() {
@@ -117,15 +93,14 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     //la pagina attiva iniziale sarà quella delle categorie
     //verrà aggiornata in base al tocco degli elementi della barra
     Widget activePage = CategoriesScreen(
-      onToggleFavorite: _toggleMealFavoriteStatus,
       availableMeals: availableMeals,
     );
     var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealsProvider);
       activePage = MealsScreen(
-        meals: _favoriteMeals,
-        onToggleFavorite: _toggleMealFavoriteStatus,
+        meals: favoriteMeals,
       );
       activePageTitle = 'Your Favorites';
     }
