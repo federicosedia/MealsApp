@@ -15,6 +15,8 @@ class MealDetailScreen extends ConsumerWidget {
 //nuovo parametro in build per ascoltare i provider
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final bool isFavorite = favoriteMeals.contains(meal);
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
@@ -36,7 +38,9 @@ class MealDetailScreen extends ConsumerWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.star),
+              icon: isFavorite
+                  ? const Icon(Icons.star)
+                  : const Icon(Icons.star_border),
             ),
           ],
         ),
