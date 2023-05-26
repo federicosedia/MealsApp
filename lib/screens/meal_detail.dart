@@ -48,15 +48,30 @@ class MealDetailScreen extends ConsumerWidget {
               //voglio far ruotare l'icona quindi prevedo rotationtransation
               //come turns imposto animazione che sarà gestita da flutter in automatico
               //come child l'icona che ruoterà
+              //aggiungendo la chiave notifico che sta avvenendo un cambiamento
+              //altrimenti non viene aggiornato lo schermo con l'animazione
+              //perchè flutter non riconosce che sta cambiando qualcosa
+              //perchè restituisce lo stesso tipo di widget
+              //come chiave aggiungo isFavorite perchè quando cambia flutter
+              //verrà notificato e vedrà che qualcosa è cambiato
+              //posso però modificare il tipo di spin cambiando l'aniamzione con tween
+              //andrò quindi a settarla io manualmente
+              //aggiungo quindi tween e il metodo animate
               icon: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 transitionBuilder: (child, animation) {
                   return RotationTransition(
-                    turns: animation,
+                    turns: Tween(
+                      begin: 0.5,
+                      end: 1.0,
+                    ).animate(animation),
                     child: child,
                   );
                 },
-                child: Icon(isFavorite ? Icons.star : Icons.star_border),
+                child: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  key: ValueKey(isFavorite),
+                ),
               ),
             ),
           ],
