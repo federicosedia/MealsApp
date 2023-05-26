@@ -38,9 +38,26 @@ class MealDetailScreen extends ConsumerWidget {
                   ),
                 );
               },
-              icon: isFavorite
-                  ? const Icon(Icons.star)
-                  : const Icon(Icons.star_border),
+              //animazione implicita:
+              //aggiungo animatedswticher
+              //come child gli metto quello che cambia
+              //duration la durata che voglio
+              //transitionbuilder l'animazione che voglio
+              //l'animazione è gestita da flutter quindi non devo prevedere inizio e fine
+              //e nemmeno come l'animazione verrà animata nello spazio
+              //voglio far ruotare l'icona quindi prevedo rotationtransation
+              //come turns imposto animazione che sarà gestita da flutter in automatico
+              //come child l'icona che ruoterà
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                    turns: animation,
+                    child: child,
+                  );
+                },
+                child: Icon(isFavorite ? Icons.star : Icons.star_border),
+              ),
             ),
           ],
         ),
