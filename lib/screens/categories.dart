@@ -5,7 +5,9 @@ import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
-class CategoriesScreen extends StatelessWidget {
+//refacot a statefull per utilizzare animazioni
+//l'animazione setta lo stato e modifica lo stato quando è in esecuzione
+class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({
     super.key,
     required this.availableMeals,
@@ -13,18 +15,47 @@ class CategoriesScreen extends StatelessWidget {
 
   final List<Meal> availableMeals;
 
-//con il navigator posso spostarmi tra due screen
-//non avendo un contesto perche siamo in uno stateless
-//passiamo il context come argomento
-//mentre route viene instaziato con Materialpageroute
-//quindi con questo metodo costruisco un nuovo schermo
+  @override
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
+}
 
-//aggiungo anche category per facilitarmi a ritrovare i dati
-//per ogni categoria
-//aggiungo .toList per converitre l'iterabile dato dal metodo where
-//e da avere cosi una lista
+//con with aggiungiamo un mixin alla classe quindi aggiunge altre proprità
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with SingleTickerProviderStateMixin {
+  //deve essere impostato prima che l'applicazione viene buildata
+  //all'inizio non avrà un valore ma solo dopo. Lo facciamo con late
+  //late dice a dart che quella variabile avrà un valore quando verrà
+  //usata per la prima volta
+  //animationcontroller è un tipo incorporato in dart
+  //è anche una classe fornite da flutter
+  late AnimationController _animationController;
+
+  void initState() {
+    super.initState();
+    //vsync vuole un ticketprovider
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 300,
+      ),
+      //le animazioni sono sempre tra due valori
+      lowerBound: 0,
+      upperBound: 1,
+    );
+  }
+
+//metodo chiamato da flutter dietro le quinte
+//animationcontroller verrà eliminato dalla memoria del dispositivo
+  @override
+  void dispose() {
+    _animationController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+//con il navigator posso spostarmi tra due screen
   void _selectCategory(BuildContext context, Category category) {
-    final filteredMeals = availableMeals
+    final filteredMeals = widget.availableMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
 
