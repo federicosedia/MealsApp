@@ -40,14 +40,21 @@ class Mealitem extends StatelessWidget {
         child: Stack(
           //stack elimina le impostazioni di borderradius quindi aggiungo clip
           children: [
-            FadeInImage(
-              fit: BoxFit.cover,
-              height:
-                  200, //height e double infinity per mettere l'immagine li senza subire distorsioni
-              width: double.infinity, //immagine non distorta,
-              //trasparentimage importato
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
+            //hero anima la transazione tra due screen
+            //ha bisogno di child ovvero il widget da animare
+            //e di tag ovvero indice univoco e noi sceglieremo l'id del pasto
+            //serve per identificare il widget sullo schermo di partenza e di arrivo
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                fit: BoxFit.cover,
+                height:
+                    200, //height e double infinity per mettere l'immagine li senza subire distorsioni
+                width: double.infinity, //immagine non distorta,
+                //trasparentimage importato
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+              ),
             ),
             Positioned(
               //questo positioned impone a suo figlio di assumere quella determinata larghezza
