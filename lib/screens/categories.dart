@@ -28,11 +28,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   //usata per la prima volta
   //animationcontroller è un tipo incorporato in dart
   //è anche una classe fornite da flutter
+  //non chiama build più volte ma è come se avesse un timer per poi aggiornare le IF
   late AnimationController _animationController;
 
   void initState() {
     super.initState();
     //vsync vuole un ticketprovider
+    //configurare animationcontroller
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(
@@ -42,6 +44,8 @@ class _CategoriesScreenState extends State<CategoriesScreen>
       lowerBound: 0,
       upperBound: 1,
     );
+//avviare animation controller
+    _animationController.forward();
   }
 
 //metodo chiamato da flutter dietro le quinte
@@ -49,7 +53,6 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   @override
   void dispose() {
     _animationController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -73,35 +76,46 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   Widget build(BuildContext context) {
     //rimozione scaffold per non avere due appbar che mostrano il titolo
     return
-        /*
-      gridview ci permette di avere una lista di widget diposti a griglia
-      abbiamo anche il metodo builder che costruisce in modo dinamico
-      oppure gridview widget
-      anche se non abbiamo il builder abbiamo bisogno comunque di griddelegate
-      crossaxiscount dice il numero di colonne
-      cross -> orizzontale
-      childaspectratio= rapporto due dimensioni
-      */
-        GridView(
-      padding: const EdgeInsets.all(24),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20),
-      children: [
-        //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
-        //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
-        for (final category in availableCategories)
-          CategoryGridItem(
-              category: category,
-              //aggiunta la funzione "onsSelectedCategory" come proprietà al widget cetegorygriditem
-              //_selectCategory accetta come argomento context
-              //
-              onsSelectedCategory: () {
-                _selectCategory(context, category);
-              })
-      ],
-    );
+        //verrà eseguito quello dentro builder in base al timer scelto da noi
+        //esempio 60 volte al secondo 60fps
+        AnimatedBuilder(
+            animation: _animationController,
+            //quello compreso in questo figlio non verrà ribuilidato
+            child: GridView(
+              padding: const EdgeInsets.all(24),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  childAspectRatio: 3 / 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20),
+              children: [
+                //ciclo for che passa per tutte le categorie e va in tutte le categorie disponibili
+                //availablecategories.map((category)=> CategoryGridItem(category: category)).toList()
+                for (final category in availableCategories)
+                  CategoryGridItem(
+                      category: category,
+                      //aggiunta la funzione "onsSelectedCategory" come proprietà al widget cetegorygriditem
+                      //_selectCategory accetta come argomento context
+                      //
+                      onsSelectedCategory: () {
+                        _selectCategory(context, category);
+                      })
+              ],
+            ),
+            //slidetransition animazione che prevede spostamenti di oggetti
+            //child indica quello che dovrà essere animato
+            //ofset è un tipo speciale per descrivere la quantità di offset di un elemento
+            //rispetto alla posizione effettiva
+            //drive costruisce un animazione sulla base di un altro valore
+            //la classe Tween anima la transizione tra due valori
+            //con tween inoltre possiamo chiamare il metodo animate
+            builder: (context, child) => SlideTransition(
+                  position: Tween(
+                    begin: const Offset(0, 0.3),
+                    end: const Offset(0, 0),
+                  ).animate(CurvedAnimation(
+                      parent: _animationController, curve: Curves.easeInOut)),
+                  child: child,
+                ));
   }
 }
